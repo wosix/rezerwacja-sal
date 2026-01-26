@@ -6,8 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,61 +23,65 @@ public class RegisterPanel extends JPanel {
     }
 
     private void initComponents() {
-        setLayout(new GridBagLayout());
+
+        setLayout(new BorderLayout(10, 10));
+
+        JPanel northWrapper = CommonGUI.createTitleWrapper("Rejestracja do Systemu");
+        add(northWrapper, BorderLayout.NORTH);
+
+        JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Tytuł
-        JLabel titleLabel = new JLabel("Rejestracja do Systemu");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        gbc.gridwidth = 2;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(titleLabel, gbc);
-
-        // Username
         gbc.gridwidth = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 0;
         gbc.gridx = 0;
-        add(new JLabel("Login:"), gbc);
+        formPanel.add(new JLabel("Login:"), gbc);
 
         gbc.gridx = 1;
         usernameField = new JTextField(15);
-        add(usernameField, gbc);
+        formPanel.add(usernameField, gbc);
 
-        // Password
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.gridx = 0;
-        add(new JLabel("Hasło:"), gbc);
+        formPanel.add(new JLabel("Hasło:"), gbc);
 
         gbc.gridx = 1;
         passwordField = new JPasswordField(15);
-        add(passwordField, gbc);
+        formPanel.add(passwordField, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.gridx = 0;
-        add(new JLabel("Powtórz hasło:"), gbc);
+        formPanel.add(new JLabel("Powtórz hasło:"), gbc);
 
         gbc.gridx = 1;
         passwordRepeatField = new JPasswordField(15);
-        add(passwordRepeatField, gbc);
+        formPanel.add(passwordRepeatField, gbc);
 
-        // Przycisk rejstracji
-        gbc.gridwidth = 2;
-        gbc.gridy = 4;
-        gbc.gridx = 0;
-        registerButton = new JButton("Zarejestruj się");
-        registerButton.setPreferredSize(new Dimension(150, 40));
-        add(registerButton, gbc);
+        passwordField.addActionListener(e -> loginButton.doClick());
 
-        // Listener dla przycisku
+        createRegisterButton();
+        createGoToLoginButton();
+
+
+        JPanel southWrapper = CommonGUI.createActionButtonWrapper(
+                registerButton,
+                loginButton
+        );
+
+        add(formPanel, BorderLayout.CENTER);
+        add(southWrapper, BorderLayout.SOUTH);
+    }
+
+    private void createRegisterButton() {
+        registerButton = CommonGUI.createButton(180, 40,
+                "Zarejestruj się");
         registerButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
             String passwordRepeat = new String(passwordRepeatField.getPassword());
 
             if (authenticate(username, password, passwordRepeat)) {
-                // Przejdź do dashboard
                 MainFrame.getInstance().showDashboard();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -87,30 +90,21 @@ public class RegisterPanel extends JPanel {
                         JOptionPane.ERROR_MESSAGE);
             }
         });
+    }
 
-        // Przycisk logowania
-        gbc.gridwidth = 2;
-        gbc.gridy = 5;
-        gbc.gridx = 0;
-        loginButton = new JButton("Przejdź do logowania");
-        loginButton.setPreferredSize(new Dimension(150, 40));
-        add(loginButton, gbc);
-
+    private void createGoToLoginButton() {
+        loginButton = CommonGUI.createButton(180, 40,
+                "Wróc do logowania");
         loginButton.addActionListener(e -> {
             MainFrame.getInstance().showLogin();
         });
-
-        // Enter też loguje
-        passwordField.addActionListener(e -> loginButton.doClick());
     }
 
     private boolean authenticate(String username, String password, String passwordRepeat) {
-        // Prosta autoryzacja dla demonstracji
-        // W prawdziwym projekcie sprawdzaj z bazą danych
+        // Prosta autoryzacja
         return password.equals(passwordRepeat);
     }
 
-    // Resetuj pola (przy wylogowaniu)
     public void resetFields() {
         usernameField.setText("");
         passwordField.setText("");
