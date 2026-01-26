@@ -1,5 +1,7 @@
 package gui;
 
+import entity.Boardroom;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -12,7 +14,6 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
-    // Referencje do paneli
     private LoginPanel loginPanel;
     private RegisterPanel registerPanel;
     private DashboardPanel dashboardPanel;
@@ -21,13 +22,11 @@ public class MainFrame extends JFrame {
     private ReservationsPanel reservationsPanel;
     private BookingPanel bookingPanel;
 
-    // Prywatny konstruktor (Singleton)
     private MainFrame() {
         initFrame();
         initPanels();
     }
 
-    // Singleton pattern - tylko jedna instancja głównego okna
     public static MainFrame getInstance() {
         if (instance == null) {
             instance = new MainFrame();
@@ -46,12 +45,10 @@ public class MainFrame extends JFrame {
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
 
-        // Menu (będzie widoczne tylko po zalogowaniu)
         setJMenuBar(createMenuBar());
     }
 
     private void initPanels() {
-        // Tworzymy panele
         loginPanel = new LoginPanel();
         registerPanel = new RegisterPanel();
         dashboardPanel = new DashboardPanel();
@@ -60,7 +57,6 @@ public class MainFrame extends JFrame {
         bookingPanel = new BookingPanel();
         reservationsPanel = new ReservationsPanel();
 
-        // Dodajemy panele do CardLayout z nazwami
         mainPanel.add(loginPanel, "LOGIN");
         mainPanel.add(registerPanel, "REGISTER");
         mainPanel.add(dashboardPanel, "DASHBOARD");
@@ -80,22 +76,19 @@ public class MainFrame extends JFrame {
         accountButton.addActionListener(e -> showAccount());
 
         JButton reservationsButton = new JButton("Moje rezerwacje");
-        reservationsButton.addActionListener(e -> showReservastions());
+        reservationsButton.addActionListener(e -> showReservations());
 
         JButton browseButton = new JButton("Przeglądaj sale konferencyjne");
         browseButton.addActionListener(e -> showBrowse());
 
-
-        JButton bookingButton = new JButton("booking");
-        bookingButton.addActionListener(e -> showBooking());
-
+//        JButton bookingButton = new JButton("booking");
+//        bookingButton.addActionListener(e -> showBooking());
 
         JButton logoutButton = new JButton("Wyloguj się");
         logoutButton.addActionListener(e -> showLogin());
 
         JButton exitButton = new JButton("Zamknij");
         exitButton.addActionListener(e -> System.exit(0));
-
 
         menuBar.add(dashboardButton);
         menuBar.add(accountButton);
@@ -104,7 +97,7 @@ public class MainFrame extends JFrame {
 
         menuBar.add(new JSeparator());
 
-        menuBar.add(bookingButton);
+//        menuBar.add(bookingButton);
 
         menuBar.add(new JSeparator());
 
@@ -114,7 +107,6 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    // Metody do przełączania widoków
     public void showLogin() {
         cardLayout.show(mainPanel, "LOGIN");
         getJMenuBar().setVisible(false);
@@ -145,19 +137,21 @@ public class MainFrame extends JFrame {
         setTitle("System Sal - przegldądaj");
     }
 
-    public void showBooking() {
+    public void showBooking(Boardroom boardroom) {
+        BookingPanel bookingPanel = getBookingPanel();
+        bookingPanel.setBoardroom(boardroom);
+
         cardLayout.show(mainPanel, "BOOKING");
         getJMenuBar().setVisible(true);
         setTitle("System Sal - rezerwacja");
     }
 
-    public void showReservastions() {
+    public void showReservations() {
         cardLayout.show(mainPanel, "RESERVATIONS");
         getJMenuBar().setVisible(true);
         setTitle("System Sal - historia rezerwacji");
     }
 
-    // Gettery do paneli (jeśli inne klasy potrzebują dostępu)
     public LoginPanel getLoginPanel() {
         return loginPanel;
     }
@@ -165,4 +159,9 @@ public class MainFrame extends JFrame {
     public DashboardPanel getDashboardPanel() {
         return dashboardPanel;
     }
+
+    public BookingPanel getBookingPanel() {
+        return bookingPanel;
+    }
+
 }

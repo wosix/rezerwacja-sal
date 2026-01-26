@@ -1,48 +1,104 @@
 package gui;
 
-import javax.swing.JLabel;
+import entity.Boardroom;
+import entity.Equipment;
+import entity.RoomSize;
+import entity.RoomType;
+
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.swing.BorderFactory.createEmptyBorder;
 
 public class BrowsePanel extends JPanel {
+
+    private JTable table;
+    private BoardroomTableModel tableModel;
+    private JScrollPane scrollPane;
 
     public BrowsePanel() {
         initComponents();
     }
 
     private void initComponents() {
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(10, 10));
 
-        JPanel topPanel = new JPanel();
-        JLabel label = new JLabel("przeglodaj wszystkie sale");
-        label.setFont(new Font("Arial", Font.BOLD, 26));
-        topPanel.add(label);
+        tableModel = new BoardroomTableModel();
+        scrollPane = createTable(tableModel);
+        add(scrollPane, BorderLayout.CENTER);
 
-        JPanel panel = new JPanel();
 
-        String[] kolumny = {"ID", "Nazwa", "Pojemność"};
-        Object[][] dane = {
-                {"1", "Sala A", 200},
-                {"2", "Sala B", 350},
-                {"3", "Sala C", 150}
-        };
+        JButton selectButton = CommonGUI.createButton(180, 40,
+                "Wybierz");
+        selectButton.addActionListener(e -> showSelectedRow());
 
-        JTable table = new JTable(dane, kolumny);
-
-        JScrollPane jScrollPane = new JScrollPane(table);
-
-        jScrollPane.setPreferredSize(new Dimension(800, 650));
-
-        panel.add(jScrollPane);
-
-        add(topPanel, BorderLayout.NORTH);
-        add(panel, BorderLayout.WEST);
-
+        JPanel southWrapper = CommonGUI.createSouthWrapper(30, selectButton);
+        add(southWrapper, BorderLayout.SOUTH);
     }
 
+    private JScrollPane createTable(AbstractTableModel tableModel) {
+        table = new JTable(tableModel);
+        table.setRowHeight(30);
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        table.setAutoCreateRowSorter(true);
+
+        scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(createEmptyBorder(20, 20, 20, 20));
+        scrollPane.setColumnHeaderView(table.getTableHeader());
+
+        loadTestData();
+
+        return scrollPane;
+    }
+
+    private void loadTestData() {
+        List<Boardroom> testRooms = createDumy();
+        tableModel.setRooms(testRooms);
+    }
+
+    private void showSelectedRow() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow >= 0) {
+            // Konwertuj indeks (bo tabela może być posortowana)
+            int modelRow = table.convertRowIndexToModel(selectedRow);
+
+            Boardroom room = tableModel.getRooms().get(modelRow);
+            JOptionPane.showMessageDialog(this,
+                    "Wybrano: " + room.getId() + "\n" +
+                            "Typ: " + room.getRoomType() + "\n" +
+                            "Status: " + room.isActive(),
+                    "Informacja",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            MainFrame.getInstance().showBooking(room);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Nie wybrano żadnej sali!",
+                    "Uwaga",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private List<Boardroom> createDumy() {
+        List<Boardroom> boardroomArrayList = new ArrayList<>();
+        for (int i = 1; i < 100; i++) {
+            boardroomArrayList.add(
+                    new Boardroom((long) i,
+                            i % 3 == 0 ? RoomType.MEETING : RoomType.CONFERENCE,
+                            i % 2 == 0 ? RoomSize.SMALL : RoomSize.MEDIUM,
+                            new Equipment()
+                    )
+            );
+        }
+        return boardroomArrayList;
+    }
 
 }
