@@ -2,7 +2,6 @@ package gui;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,7 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 
 public class DashboardPanel extends JPanel {
-    private JLabel welcomeLabel;
+
     private JButton browseButton;
     private JButton reservationsButton;
 
@@ -22,34 +21,35 @@ public class DashboardPanel extends JPanel {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        JPanel topPanel = new JPanel();
-        welcomeLabel = new JLabel("Witaj w Systemie rezerwacji sal!");
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 32));
-        topPanel.add(welcomeLabel);
-        add(topPanel, BorderLayout.NORTH);
+        JPanel northWrapper = CommonGUI.createTitleWrapper("Witaj w Systemie rezerwacji sal!");
+        add(northWrapper, BorderLayout.NORTH);
 
-        // Panel centralny z przyciskami
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        browseButton = createMenuButton("Przeglądaj sale");
-        reservationsButton = createMenuButton("Moje rezerwacje");
+        createBrowseButton();
+        createMyReservationsButton();
 
         centerPanel.add(browseButton);
         centerPanel.add(reservationsButton);
 
         add(centerPanel, BorderLayout.CENTER);
 
-        // Panel dolny
         JPanel bottomPanel = new JPanel();
         add(bottomPanel, BorderLayout.SOUTH);
 
+    }
+
+    private void createBrowseButton() {
+        browseButton = createMenuButton("Przeglądaj sale");
         browseButton.addActionListener(e ->
                 MainFrame.getInstance().showBrowse());
+    }
 
+    private void createMyReservationsButton() {
+        reservationsButton = createMenuButton("Moje rezerwacje");
         reservationsButton.addActionListener(e ->
-                MainFrame.getInstance().showReservastions());
-
+                MainFrame.getInstance().showReservations());
     }
 
     private JButton createMenuButton(String text) {
