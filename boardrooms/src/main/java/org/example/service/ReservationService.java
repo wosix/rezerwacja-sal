@@ -22,6 +22,8 @@ public interface ReservationService {
 
     void update(Long id, Reservation boardroom);
 
+    void cancel(Long id);
+    
     void updateStatus(Long id, ReservationStatus status);
 
     ReservationTableDTO mapToTableDto(Reservation reservation);

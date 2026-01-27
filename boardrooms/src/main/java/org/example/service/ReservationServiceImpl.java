@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.exception.NotFoundException;
 import org.example.model.Reservation;
 import org.example.model.ReservationStatus;
 import org.example.model.dto.ReservationTableDTO;
@@ -48,6 +49,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public void cancel(Long id) {
+        Optional<Reservation> reservationOptional = reservationRepository.findById(id);
+        if (reservationOptional.isEmpty()) {
+            throw new NotFoundException("Nie znaleziono rezerwacji o id: " + id);
+        }
+        Reservation reservation = reservationOptional.get();
+        reservation.setStatus(ReservationStatus.CANCELLED);
+        reservationRepository.save(reservation);
+    }
+
+    @Override
     public void updateStatus(Long id, ReservationStatus status) {
 //        reservationRepository.save();
     }
@@ -55,6 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationTableDTO mapToTableDto(Reservation reservation) {
         ReservationTableDTO dto = new ReservationTableDTO();
+        dto.setId(reservation.getId());
         dto.setBoardroomNumber(reservation.getBoardroom().getNumber());
         dto.setBoardroomType(reservation.getBoardroom().getRoomType().getDisplayName());
         dto.setBoardroomSize(reservation.getBoardroom().getRoomSize().getDisplayName());

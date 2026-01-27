@@ -65,7 +65,7 @@ public class ReservationRepository implements IRepository<Reservation, Long> {
 
     public List<Reservation> findAllByUserId(Long id) {
         return database.values().stream()
-                .filter(reservation -> id.equals(reservation.getUserId()))
+                .filter(reservation -> !id.equals(reservation.getUserId()))
                 .toList();
     }
 

@@ -1,8 +1,10 @@
 package org.example.gui.views.browse;
 
+import org.example.exception.NotFoundException;
 import org.example.gui.CommonGUI;
 import org.example.model.Account;
 import org.example.model.Reservation;
+import org.example.model.ReservationStatus;
 import org.example.model.dto.ReservationTableDTO;
 import org.example.service.ReservationServiceImpl;
 
@@ -47,12 +49,44 @@ public class ReservationsPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
 
-        JButton selectButton = CommonGUI.createButton(180, 40,
-                "Wybierz");
-        selectButton.addActionListener(e -> showSelectedRow());
+        JButton selectButton = createCancelButton();
 
-        JPanel southWrapper = CommonGUI.createSouthWrapper(30, selectButton);
+        JPanel southWrapper = CommonGUI.createSouthWrapper(30,
+                selectButton
+        );
         add(southWrapper, BorderLayout.SOUTH);
+    }
+
+    private JButton createCancelButton() {
+        JButton cancelButton = CommonGUI.createButton(180, 40,
+                "Anuluj rezerwacje");
+        cancelButton.addActionListener(e -> cancelReservation());
+        return cancelButton;
+    }
+
+    private void cancelReservation() {
+        try {
+            ReservationTableDTO reservation = selectRow();
+            if (reservation == null) return;
+            System.out.println("id : " + reservation.getId());
+
+            reservationService.cancel(reservation.getId());
+
+            reservation.setStatus(ReservationStatus.CANCELLED);
+            tableModel.fireTableDataChanged();
+            repaint();
+
+            JOptionPane.showMessageDialog(this,
+                    "Udało się anulować rezerwację sali - " + reservation.getBoardroomNumber(),
+                    "Sukces!",
+                    JOptionPane.PLAIN_MESSAGE);
+
+        } catch (NotFoundException ex) {
+            JOptionPane.showMessageDialog(this,
+                    ex.getMessage(),
+                    "Nie znaleziono!",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private JScrollPane createTable(AbstractTableModel tableModel) {
@@ -71,35 +105,30 @@ public class ReservationsPanel extends JPanel {
     }
 
     private void loadReservations() {
-//        List<Reservation> reservations = reservationService.getByUserId(account.getId());
-        List<Reservation> reservations = reservationService.getAll();
-
+        List<Reservation> reservations = reservationService.getByUserId(account.getId());
 
         List<ReservationTableDTO> reservationTableDTOS = new ArrayList<>();
         for (Reservation reservation : reservations) {
             reservationTableDTOS.add(reservationService.mapToTableDto(reservation));
         }
 
-        System.out.println("przerobilo rezerwacji : " + reservationTableDTOS.size());
-
         tableModel.setReservations(reservationTableDTOS);
     }
 
-    private void showSelectedRow() {
+    private ReservationTableDTO selectRow() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
-            // Konwertuj indeks (bo tabela może być posortowana)
             int modelRow = table.convertRowIndexToModel(selectedRow);
 
-            ReservationTableDTO room = tableModel.getReservations().get(modelRow);
+            return tableModel.getReservations().get(modelRow);
 
-//            MainFrame.getInstance().showBooking(room);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Nie wybrano żadnej sali!",
                     "Uwaga",
                     JOptionPane.WARNING_MESSAGE);
         }
+        return null;
     }
 
 }
