@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class AccountRepository {
+public class AccountRepository implements IRepository<Account, Long> {
 
     private static AccountRepository instance;
 
@@ -30,20 +30,32 @@ public class AccountRepository {
         return instance;
     }
 
-    public Account save(Account account) {
+    @Override
+    public void save(Account account) {
         if (account.getId() == null) {
             account.setId(idGenerator.getAndIncrement());
         }
         database.put(account.getId(), account);
-        return account;
     }
 
-    public Optional<Account> findById(Long id) {
-        return Optional.ofNullable(database.get(id));
+    @Override
+    public void delete(Long id) {
+        database.remove(id);
     }
 
+    @Override
     public List<Account> findAll() {
         return new ArrayList<>(database.values());
+    }
+
+    @Override
+    public long count() {
+        return database.size();
+    }
+
+    @Override
+    public Optional<Account> findById(Long id) {
+        return Optional.ofNullable(database.get(id));
     }
 
     public Optional<Account> findByEmail(String email) {
@@ -56,18 +68,6 @@ public class AccountRepository {
         return database.values().stream()
                 .filter(account -> role.equals(account.getRole()))
                 .toList();
-    }
-
-    public void deleteById(Long id) {
-        database.remove(id);
-    }
-
-    public boolean existsById(Long id) {
-        return database.containsKey(id);
-    }
-
-    public long count() {
-        return database.size();
     }
 
 }

@@ -86,7 +86,8 @@ public class LoginPanel extends JPanel {
                         "Udane logowanie!",
                         "Sukces",
                         JOptionPane.PLAIN_MESSAGE);
-                
+
+                resetFields();
 
             } catch (LoginException ex) {
                 JOptionPane.showMessageDialog(this,
