@@ -28,6 +28,7 @@ public class BrowsePanel extends JPanel {
     public BrowsePanel() {
         this.boardroomService = new BoardroomServiceImpl();
         initComponents();
+        loadBoardrooms();
     }
 
     private void initComponents() {
@@ -55,13 +56,12 @@ public class BrowsePanel extends JPanel {
         scrollPane.setBorder(createEmptyBorder(20, 20, 20, 20));
         scrollPane.setColumnHeaderView(table.getTableHeader());
 
-        loadBoardrooms();
-
         return scrollPane;
     }
 
     private void loadBoardrooms() {
         List<Boardroom> boardrooms = boardroomService.getAll();
+        System.out.println("wszystkich sal - " + boardrooms.size());
         tableModel.setRooms(boardrooms);
     }
 

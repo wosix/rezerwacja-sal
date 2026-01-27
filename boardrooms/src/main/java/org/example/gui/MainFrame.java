@@ -88,7 +88,7 @@ public class MainFrame extends JFrame {
         registerPanel = new RegisterPanel();
 //        dashboardPanel = new DashboardPanel();
         accountPanel = new AccountPanel();
-        browsePanel = new BrowsePanel();
+//        browsePanel = new BrowsePanel();
         bookingPanel = new BookingPanel();
 //        reservationsPanel = new ReservationsPanel();
 
@@ -98,7 +98,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(registerPanel, "REGISTER");
 //        mainPanel.add(dashboardPanel, "DASHBOARD");
         mainPanel.add(accountPanel, "ACCOUNT");
-        mainPanel.add(browsePanel, "BROWSE");
+//        mainPanel.add(browsePanel, "BROWSE");
 //        mainPanel.add(reservationsPanel, "RESERVATIONS");
         mainPanel.add(bookingPanel, "BOOKING");
 
@@ -214,6 +214,11 @@ public class MainFrame extends JFrame {
     }
 
     public void showBrowse() {
+        if (browsePanel != null) {
+            mainPanel.remove(browsePanel);
+        }
+        browsePanel = new BrowsePanel();
+        mainPanel.add(browsePanel, "BROWSE");
         cardLayout.show(mainPanel, "BROWSE");
         getJMenuBar().setVisible(true);
     }
