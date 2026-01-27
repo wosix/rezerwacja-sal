@@ -18,10 +18,6 @@ public class BoardroomTableModel extends AbstractTableModel {
             "Status"
     };
 
-    public List<Boardroom> getRooms() {
-        return rooms;
-    }
-
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
@@ -41,25 +37,23 @@ public class BoardroomTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Boardroom room = rooms.get(rowIndex);
 
-        switch (columnIndex) {
-            case 0:
-                return room.getId();
-            case 1:
-                return room.getRoomType();
-            case 2:
-                return room.getRoomSize();
-            case 3:
-                return room.getEquipment().hasProjector();
-            case 4:
-                return room.isAvailable();
-            default:
-                return "";
-        }
+        return switch (columnIndex) {
+            case 0 -> room.getNumber();
+            case 1 -> room.getRoomType();
+            case 2 -> room.getRoomSize();
+            case 3 -> room.getEquipment().hasProjector();
+            case 4 -> room.isAvailable();
+            default -> "";
+        };
     }
 
     public void setRooms(List<Boardroom> rooms) {
         this.rooms = rooms;
         fireTableDataChanged();
+    }
+
+    public List<Boardroom> getRooms() {
+        return rooms;
     }
 
 }

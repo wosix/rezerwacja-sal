@@ -4,6 +4,7 @@ package org.example.gui;
 import org.example.gui.views.admin.CreateBoardroomPanel;
 import org.example.gui.views.booking.BookingPanel;
 import org.example.gui.views.browse.BrowsePanel;
+import org.example.gui.views.browse.ReservationsPanel;
 import org.example.gui.views.start.LoginPanel;
 import org.example.gui.views.start.RegisterPanel;
 import org.example.model.Account;
@@ -89,7 +90,7 @@ public class MainFrame extends JFrame {
         accountPanel = new AccountPanel();
         browsePanel = new BrowsePanel();
         bookingPanel = new BookingPanel();
-        reservationsPanel = new ReservationsPanel();
+//        reservationsPanel = new ReservationsPanel();
 
         createBoardroomPanel = new CreateBoardroomPanel();
 
@@ -98,7 +99,7 @@ public class MainFrame extends JFrame {
 //        mainPanel.add(dashboardPanel, "DASHBOARD");
         mainPanel.add(accountPanel, "ACCOUNT");
         mainPanel.add(browsePanel, "BROWSE");
-        mainPanel.add(reservationsPanel, "RESERVATIONS");
+//        mainPanel.add(reservationsPanel, "RESERVATIONS");
         mainPanel.add(bookingPanel, "BOOKING");
 
         mainPanel.add(createBoardroomPanel, "CREATE_BOARDROOM");
@@ -226,6 +227,11 @@ public class MainFrame extends JFrame {
     }
 
     public void showReservations() {
+        if (reservationsPanel != null) {
+            mainPanel.remove(reservationsPanel);
+        }
+        reservationsPanel = new ReservationsPanel(this.currentUser);
+        mainPanel.add(reservationsPanel, "RESERVATIONS");
         cardLayout.show(mainPanel, "RESERVATIONS");
         getJMenuBar().setVisible(true);
     }

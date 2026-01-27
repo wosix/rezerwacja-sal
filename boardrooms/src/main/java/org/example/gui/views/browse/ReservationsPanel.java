@@ -1,9 +1,10 @@
 package org.example.gui.views.browse;
 
 import org.example.gui.CommonGUI;
-import org.example.gui.MainFrame;
-import org.example.model.Boardroom;
-import org.example.service.BoardroomServiceImpl;
+import org.example.model.Account;
+import org.example.model.Reservation;
+import org.example.model.dto.ReservationTableDTO;
+import org.example.service.ReservationServiceImpl;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -13,29 +14,38 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.swing.BorderFactory.createEmptyBorder;
 
-public class BrowsePanel extends JPanel {
+public class ReservationsPanel extends JPanel {
 
-    private final BoardroomServiceImpl boardroomService;
+    private final Account account;
+
+    private final ReservationServiceImpl reservationService;
 
     private JTable table;
-    private BoardroomTableModel tableModel;
+    private ReservationsTableModel tableModel;
     private JScrollPane scrollPane;
 
-    public BrowsePanel() {
-        this.boardroomService = new BoardroomServiceImpl();
+    public ReservationsPanel(Account user) {
+        this.account = user;
+        this.reservationService = new ReservationServiceImpl();
         initComponents();
     }
 
     private void initComponents() {
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout());
 
-        tableModel = new BoardroomTableModel();
+        JPanel northWrapper = CommonGUI.createNorthWrapper(25,
+                CommonGUI.createTitleLabel("Moje rezerwacje"));
+        add(northWrapper);
+
+        tableModel = new ReservationsTableModel();
         scrollPane = createTable(tableModel);
         add(scrollPane, BorderLayout.CENTER);
+
 
         JButton selectButton = CommonGUI.createButton(180, 40,
                 "Wybierz");
@@ -55,14 +65,24 @@ public class BrowsePanel extends JPanel {
         scrollPane.setBorder(createEmptyBorder(20, 20, 20, 20));
         scrollPane.setColumnHeaderView(table.getTableHeader());
 
-        loadBoardrooms();
+        loadReservations();
 
         return scrollPane;
     }
 
-    private void loadBoardrooms() {
-        List<Boardroom> boardrooms = boardroomService.getAll();
-        tableModel.setRooms(boardrooms);
+    private void loadReservations() {
+//        List<Reservation> reservations = reservationService.getByUserId(account.getId());
+        List<Reservation> reservations = reservationService.getAll();
+
+
+        List<ReservationTableDTO> reservationTableDTOS = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            reservationTableDTOS.add(reservationService.mapToTableDto(reservation));
+        }
+
+        System.out.println("przerobilo rezerwacji : " + reservationTableDTOS.size());
+
+        tableModel.setReservations(reservationTableDTOS);
     }
 
     private void showSelectedRow() {
@@ -71,9 +91,9 @@ public class BrowsePanel extends JPanel {
             // Konwertuj indeks (bo tabela może być posortowana)
             int modelRow = table.convertRowIndexToModel(selectedRow);
 
-            Boardroom room = tableModel.getRooms().get(modelRow);
+            ReservationTableDTO room = tableModel.getReservations().get(modelRow);
 
-            MainFrame.getInstance().showBooking(room);
+//            MainFrame.getInstance().showBooking(room);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Nie wybrano żadnej sali!",

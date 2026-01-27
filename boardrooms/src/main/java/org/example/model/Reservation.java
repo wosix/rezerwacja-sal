@@ -1,65 +1,26 @@
 package org.example.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class Reservation {
 
     private Long id;
-    private Long boardroomId;
-    private Account user;
+    private Long userId;
+    private Boardroom boardroom;
     private LocalDateTime start;
     private LocalDateTime end;
     private ReservationStatus status;
 
-    public Reservation() {
-        this.status = ReservationStatus.CONFIRMED;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getBoardroomId() {
-        return boardroomId;
-    }
-
-    public void setBoardroomId(Long boardroomId) {
-        this.boardroomId = boardroomId;
-    }
-
-    public Account getUser() {
-        return user;
-    }
-
-    public void setUser(Account user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getStart() {
-        return start;
-    }
-
-    public void setStart(LocalDateTime start) {
+    public Reservation(Long userId, Boardroom boardroom, LocalDateTime start, LocalDateTime end, ReservationStatus status) {
+        this.userId = userId;
+        this.boardroom = boardroom;
         this.start = start;
-    }
-
-    public LocalDateTime getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDateTime end) {
         this.end = end;
-    }
-
-    public ReservationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ReservationStatus status) {
         this.status = status;
     }
 
