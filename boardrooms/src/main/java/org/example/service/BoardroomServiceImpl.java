@@ -7,6 +7,7 @@ import org.example.model.dto.BoardroomDTO;
 import org.example.repository.BoardroomRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BoardroomServiceImpl implements BoardroomService {
 
@@ -18,12 +19,12 @@ public class BoardroomServiceImpl implements BoardroomService {
 
     @Override
     public List<Boardroom> getAll() {
-        return List.of();
+        return boardroomRepository.findAll();
     }
 
     @Override
-    public Boardroom getById(int id) {
-        return null;
+    public Optional<Boardroom> getById(Long id) {
+        return boardroomRepository.findById(id);
     }
 
     @Override
@@ -55,18 +56,18 @@ public class BoardroomServiceImpl implements BoardroomService {
     }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(Long id) {
+        boardroomRepository.delete(id);
     }
 
     @Override
-    public Boardroom update(int id, Boardroom boardroom) {
-        return null;
+    public void update(Long id, Boardroom boardroom) {
+        boardroomRepository.save(boardroom);
     }
 
     @Override
-    public Boardroom updateStatus(int id, boolean isActive) {
-        return null;
+    public void updateStatus(Long id, boolean isActive) {
+//        boardroomRepository.save();
     }
 
 }

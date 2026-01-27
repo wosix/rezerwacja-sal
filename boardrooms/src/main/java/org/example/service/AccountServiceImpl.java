@@ -19,12 +19,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> getAll() {
-        return List.of();
+        return accountRepository.findAll();
     }
 
     @Override
-    public Account getById(int id) {
-        return null;
+    public Optional<Account> getById(Long id) {
+        return accountRepository.findById(id);
     }
 
     @Override
@@ -72,13 +72,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void delete(int id) {
-
+    public void delete(Long id) {
+        accountRepository.delete(id);
     }
 
     @Override
-    public Account updateAccount(int id, Account account) {
-        return null;
+    public void updateAccount(Long id, Account account) {
+        accountRepository.save(account);
     }
 
 }

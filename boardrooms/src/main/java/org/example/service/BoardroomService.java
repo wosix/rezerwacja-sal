@@ -4,19 +4,20 @@ import org.example.model.Boardroom;
 import org.example.model.dto.BoardroomDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BoardroomService {
 
     List<Boardroom> getAll();
 
-    Boardroom getById(int id);
+    Optional<Boardroom> getById(Long id);
 
     void create(BoardroomDTO boardroomDTO);
 
-    void delete(int id);
+    void delete(Long id);
 
-    Boardroom update(int id, Boardroom boardroom);
+    void update(Long id, Boardroom boardroom);
 
-    Boardroom updateStatus(int id, boolean isActive);
+    void updateStatus(Long id, boolean isActive);
 
 }

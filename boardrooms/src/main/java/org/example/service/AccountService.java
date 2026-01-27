@@ -10,14 +10,14 @@ public interface AccountService {
 
     List<Account> getAll();
 
-    Account getById(int id);
+    Optional<Account> getById(Long id);
 
     Optional<Account> login(String email, String password);
 
     void create(AccountDTO account);
 
-    void delete(int id);
+    void delete(Long id);
 
-    Account updateAccount(int id, Account account);
+    void updateAccount(Long id, Account account);
 
 }

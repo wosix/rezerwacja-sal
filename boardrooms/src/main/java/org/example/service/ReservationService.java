@@ -2,24 +2,28 @@ package org.example.service;
 
 import org.example.model.Reservation;
 import org.example.model.ReservationStatus;
+import org.example.model.dto.ReservationTableDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservationService {
 
     List<Reservation> getAll();
 
-    List<Reservation> getByUserId(int userId);
+    List<Reservation> getByUserId(Long userId);
 
     List<Reservation> getByDate(LocalDateTime localDateTime);
 
-    Reservation getById(int id);
+    Optional<Reservation> getById(Long id);
 
-    void delete(int id);
+    void delete(Long id);
 
-    Reservation update(int id, Reservation boardroom);
+    void update(Long id, Reservation boardroom);
 
-    Reservation updateStatus(int id, ReservationStatus status);
+    void updateStatus(Long id, ReservationStatus status);
+
+    ReservationTableDTO mapToTableDto(Reservation reservation);
 
 }
