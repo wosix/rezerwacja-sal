@@ -1,0 +1,25 @@
+package org.example.model;
+
+public enum RoomType {
+    MEETING("Spotkań biznesowych"),
+    CONFERENCE("Konferencyjna"),
+    WORKSHOP("Warsztatowa"),
+    TRAINING("Szkoleniowa"),
+    PRESENTATION("Prezentacyjna"),
+    VIDEO_CONFERENCE("Wideokonferencyjna");
+
+    private final String displayName;
+
+    RoomType(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public static RoomType fromDisplayName(String displayName) {
+        for (RoomType type : values()) {
+            if (type.displayName.equals(displayName)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("Nieznany typ sali: " + displayName);
+    }
+}
