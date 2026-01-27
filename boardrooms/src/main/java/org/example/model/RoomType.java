@@ -1,5 +1,10 @@
 package org.example.model;
 
+import lombok.Getter;
+
+import java.util.Arrays;
+
+@Getter
 public enum RoomType {
     MEETING("Spotkań biznesowych"),
     CONFERENCE("Konferencyjna"),
@@ -20,6 +25,12 @@ public enum RoomType {
                 return type;
             }
         }
-        throw new IllegalArgumentException("Nieznany typ sali: " + displayName);
+        return CONFERENCE;
+    }
+
+    public static String[] getDisplayNames() {
+        return Arrays.stream(values())
+                .map(RoomType::getDisplayName)
+                .toArray(String[]::new);
     }
 }

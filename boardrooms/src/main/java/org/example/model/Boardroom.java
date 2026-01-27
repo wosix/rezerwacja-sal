@@ -22,5 +22,4 @@ public class Boardroom {
         this.available = isAvailable;
     }
 
-
 }
