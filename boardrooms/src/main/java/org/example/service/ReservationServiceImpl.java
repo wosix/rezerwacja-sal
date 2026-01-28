@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.exception.NotFoundException;
+import org.example.model.Boardroom;
 import org.example.model.Reservation;
 import org.example.model.ReservationStatus;
 import org.example.model.dto.ReservationTableDTO;
@@ -30,6 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getByDate(LocalDateTime localDateTime) {
+//        return reservationRepository.find;
         return List.of();
     }
 
@@ -49,6 +51,19 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public void makeReservation(Long userId, Boardroom boardroom, LocalDateTime dateTimeStart) {
+        LocalDateTime dateTimeEnd = dateTimeStart.plusMinutes(59);
+        Reservation reservation = new Reservation(
+                userId,
+                boardroom,
+                dateTimeStart,
+                dateTimeEnd,
+                ReservationStatus.CONFIRMED
+        );
+        reservationRepository.save(reservation);
+    }
+
+    @Override
     public void cancel(Long id) {
         Optional<Reservation> reservationOptional = reservationRepository.findById(id);
         if (reservationOptional.isEmpty()) {
@@ -62,6 +77,17 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void updateStatus(Long id, ReservationStatus status) {
 //        reservationRepository.save();
+    }
+
+    @Override
+    public boolean isHourBooked(Long boardroomId, LocalDateTime date, int hour) {
+        LocalDateTime hourToCheck = date.withHour(hour).withMinute(0);
+
+        return reservationRepository.findByBoardroomId(boardroomId).stream()
+                .anyMatch(reservation ->
+                        !hourToCheck.isBefore(reservation.getStart()) &&
+                                hourToCheck.isBefore(reservation.getEnd())
+                );
     }
 
     @Override

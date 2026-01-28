@@ -15,5 +15,4 @@ public interface IRepository<T, ID> {
 
     long count();
 
-
 }

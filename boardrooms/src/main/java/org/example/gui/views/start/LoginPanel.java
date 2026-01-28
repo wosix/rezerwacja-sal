@@ -78,14 +78,13 @@ public class LoginPanel extends JPanel {
             String email = emailField.getText();
             String password = new String(passwordField.getPassword());
 
-
             try {
                 MainFrame.getInstance().handleLogin(email, password);
 
-                JOptionPane.showMessageDialog(this,
-                        "Udane logowanie!",
-                        "Sukces",
-                        JOptionPane.PLAIN_MESSAGE);
+//                JOptionPane.showMessageDialog(this,
+//                        "Udane logowanie!",
+//                        "Sukces",
+//                        JOptionPane.PLAIN_MESSAGE);
 
                 resetFields();
 
@@ -105,13 +104,6 @@ public class LoginPanel extends JPanel {
         toRegisterButton.addActionListener(e -> {
             MainFrame.getInstance().showRegister();
         });
-    }
-
-    private boolean authenticate(String username, String password) {
-        // Prosta autoryzacja
-        return username.equals("admin") && password.equals("admin123") ||
-                username.equals("student") && password.equals("student123") ||
-                username.equals("a") && password.equals("a");
     }
 
     public void resetFields() {

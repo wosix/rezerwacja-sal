@@ -61,7 +61,7 @@ public class BrowsePanel extends JPanel {
 
     private void loadBoardrooms() {
         List<Boardroom> boardrooms = boardroomService.getAll();
-        System.out.println("wszystkich sal - " + boardrooms.size());
+//        System.out.println("wszystkich sal - " + boardrooms.size());
         tableModel.setRooms(boardrooms);
     }
 

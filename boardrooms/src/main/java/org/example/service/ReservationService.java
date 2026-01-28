@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.model.Boardroom;
 import org.example.model.Reservation;
 import org.example.model.ReservationStatus;
 import org.example.model.dto.ReservationTableDTO;
@@ -20,11 +21,15 @@ public interface ReservationService {
 
     void delete(Long id);
 
-    void update(Long id, Reservation boardroom);
+    void update(Long id, Reservation reservation);
+
+    void makeReservation(Long userId, Boardroom boardroomId, LocalDateTime dateTime);
 
     void cancel(Long id);
-    
+
     void updateStatus(Long id, ReservationStatus status);
+
+    boolean isHourBooked(Long boardroomId, LocalDateTime date, int hour);
 
     ReservationTableDTO mapToTableDto(Reservation reservation);
 
