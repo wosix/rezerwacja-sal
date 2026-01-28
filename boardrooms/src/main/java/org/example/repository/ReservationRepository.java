@@ -26,8 +26,8 @@ public class ReservationRepository implements IRepository<Reservation, Long> {
         Optional<Boardroom> boardroom1 = boardroomRepository.findById(1L);
         Optional<Boardroom> boardroom = boardroomRepository.findById(2L);
 
-        save(new Reservation(1L, boardroom.get(), LocalDateTime.now(), LocalDateTime.now().plusHours(2), ReservationStatus.CONFIRMED));
-        save(new Reservation(1L, boardroom1.get(), LocalDateTime.of(2026, 1, 28, 7, 0), LocalDateTime.of(2026, 1, 28, 10, 0), ReservationStatus.CONFIRMED));
+        save(new Reservation(3L, boardroom.get(), LocalDateTime.now(), LocalDateTime.now().plusHours(2), ReservationStatus.CONFIRMED));
+        save(new Reservation(3L, boardroom1.get(), LocalDateTime.of(2026, 1, 28, 7, 0), LocalDateTime.of(2026, 1, 28, 10, 0), ReservationStatus.CONFIRMED));
         save(new Reservation(2L, boardroom1.get(), LocalDateTime.of(2026, 1, 28, 17, 0), LocalDateTime.of(2026, 1, 28, 19, 0), ReservationStatus.CONFIRMED));
     }
 
@@ -67,8 +67,9 @@ public class ReservationRepository implements IRepository<Reservation, Long> {
     }
 
     public List<Reservation> findAllByUserId(Long id) {
+        System.out.println("znajdz reserwacje dla user id - " + id);
         return database.values().stream()
-                .filter(reservation -> !id.equals(reservation.getUserId()))
+                .filter(reservation -> id.equals(reservation.getUserId()))
                 .toList();
     }
 

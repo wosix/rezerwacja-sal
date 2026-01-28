@@ -115,6 +115,7 @@ public class BookingPanel extends JPanel {
                     "Sukces!",
                     JOptionPane.INFORMATION_MESSAGE);
 
+            refreshTimePanel();
 
         } catch (ValidationException ex) {
             JOptionPane.showMessageDialog(this,

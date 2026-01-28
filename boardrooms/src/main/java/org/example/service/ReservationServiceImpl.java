@@ -85,7 +85,8 @@ public class ReservationServiceImpl implements ReservationService {
 
         return reservationRepository.findByBoardroomId(boardroomId).stream()
                 .anyMatch(reservation ->
-                        !hourToCheck.isBefore(reservation.getStart()) &&
+                        reservation.getStatus() != ReservationStatus.CANCELLED &&
+                                !hourToCheck.isBefore(reservation.getStart()) &&
                                 hourToCheck.isBefore(reservation.getEnd())
                 );
     }

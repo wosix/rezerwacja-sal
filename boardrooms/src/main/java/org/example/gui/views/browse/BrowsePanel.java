@@ -25,6 +25,8 @@ public class BrowsePanel extends JPanel {
     private BoardroomTableModel tableModel;
     private JScrollPane scrollPane;
 
+    private JButton selectButton;
+
     public BrowsePanel() {
         this.boardroomService = new BoardroomServiceImpl();
         initComponents();
@@ -38,7 +40,7 @@ public class BrowsePanel extends JPanel {
         scrollPane = createTable(tableModel);
         add(scrollPane, BorderLayout.CENTER);
 
-        JButton selectButton = CommonGUI.createButton(180, 40,
+        selectButton = CommonGUI.createButton(180, 40,
                 "Wybierz");
         selectButton.addActionListener(e -> showSelectedRow());
 
@@ -61,19 +63,25 @@ public class BrowsePanel extends JPanel {
 
     private void loadBoardrooms() {
         List<Boardroom> boardrooms = boardroomService.getAll();
-//        System.out.println("wszystkich sal - " + boardrooms.size());
         tableModel.setRooms(boardrooms);
     }
 
     private void showSelectedRow() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow >= 0) {
-            // Konwertuj indeks (bo tabela może być posortowana)
             int modelRow = table.convertRowIndexToModel(selectedRow);
 
             Boardroom room = tableModel.getRooms().get(modelRow);
 
-            MainFrame.getInstance().showBooking(room);
+            if (room.isAvailable()) {
+                MainFrame.getInstance().showBooking(room);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Wybrano nie aktywną salę!",
+                        "Uwaga",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
         } else {
             JOptionPane.showMessageDialog(this,
                     "Nie wybrano żadnej sali!",

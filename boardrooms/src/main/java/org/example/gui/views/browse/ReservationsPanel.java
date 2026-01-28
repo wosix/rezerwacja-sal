@@ -35,6 +35,7 @@ public class ReservationsPanel extends JPanel {
         this.account = user;
         this.reservationService = new ReservationServiceImpl();
         initComponents();
+        loadReservations();
     }
 
     private void initComponents() {
@@ -99,12 +100,11 @@ public class ReservationsPanel extends JPanel {
         scrollPane.setBorder(createEmptyBorder(20, 20, 20, 20));
         scrollPane.setColumnHeaderView(table.getTableHeader());
 
-        loadReservations();
-
         return scrollPane;
     }
 
     private void loadReservations() {
+        table.removeAll();
         List<Reservation> reservations = reservationService.getByUserId(account.getId());
 
         List<ReservationTableDTO> reservationTableDTOS = new ArrayList<>();
