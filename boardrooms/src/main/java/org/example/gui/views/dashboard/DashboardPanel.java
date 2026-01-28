@@ -1,5 +1,7 @@
-package org.example.gui;
+package org.example.gui.views.dashboard;
 
+import org.example.gui.CommonGUI;
+import org.example.gui.views.MainFrame;
 import org.example.model.Account;
 
 import javax.swing.BorderFactory;

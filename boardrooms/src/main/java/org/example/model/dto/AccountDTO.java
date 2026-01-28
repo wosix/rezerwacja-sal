@@ -2,7 +2,7 @@ package org.example.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.example.model.Role;
+import org.example.model.enums.Role;
 
 @AllArgsConstructor
 @Getter

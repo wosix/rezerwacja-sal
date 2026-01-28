@@ -1,7 +1,7 @@
-package org.example.gui.views.browse;
+package org.example.gui.views.dashboard;
 
 import org.example.gui.CommonGUI;
-import org.example.gui.MainFrame;
+import org.example.gui.views.MainFrame;
 import org.example.model.Boardroom;
 import org.example.service.BoardroomServiceImpl;
 

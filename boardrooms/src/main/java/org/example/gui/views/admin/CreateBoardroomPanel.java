@@ -2,10 +2,10 @@ package org.example.gui.views.admin;
 
 import org.example.exception.ValidationException;
 import org.example.gui.CommonGUI;
-import org.example.gui.MainFrame;
-import org.example.model.RoomSize;
-import org.example.model.RoomType;
+import org.example.gui.views.MainFrame;
 import org.example.model.dto.BoardroomDTO;
+import org.example.model.enums.RoomSize;
+import org.example.model.enums.RoomType;
 import org.example.service.BoardroomServiceImpl;
 
 import javax.swing.BorderFactory;
@@ -179,11 +179,11 @@ public class CreateBoardroomPanel extends JPanel {
         availableCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
         availableCheckBox.setSelected(true);
 
-        projectorCheckBox = new JCheckBox("Projektor multimedialny");
-        whiteboardCheckBox = new JCheckBox("Tablica suchościeralna");
+        projectorCheckBox = new JCheckBox("Rzutnik");
+        whiteboardCheckBox = new JCheckBox("Biała tablica");
         tvCheckBox = new JCheckBox("Telewizor");
         videoConferenceCheckBox = new JCheckBox("System wideokonferencji");
-        ventilationCheckBox = new JCheckBox("Klimatyzacja/wentylacja");
+        ventilationCheckBox = new JCheckBox("Klimatyzacja / wentylacja");
         soundSystemCheckBox = new JCheckBox("System nagłośnienia");
 
         Font checkBoxFont = new Font("Arial", Font.PLAIN, 13);
@@ -223,7 +223,7 @@ public class CreateBoardroomPanel extends JPanel {
 
     private void createBackButton() {
         backButton = CommonGUI.createButton(180, 40,
-                "Wróc do logowania");
+                "Powrót");
         backButton.addActionListener(e -> {
             MainFrame.getInstance().showDashboard(MainFrame.getInstance().getCurrentUser());
         });

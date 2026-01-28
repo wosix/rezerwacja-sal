@@ -1,5 +1,7 @@
 package org.example.model;
 
+import org.example.model.enums.Role;
+
 public class Account {
 
     private Long id;

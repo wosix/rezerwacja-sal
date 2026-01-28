@@ -1,4 +1,4 @@
-package org.example.gui.views.browse;
+package org.example.gui.views.dashboard;
 
 import org.example.model.dto.ReservationTableDTO;
 

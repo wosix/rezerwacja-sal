@@ -35,7 +35,7 @@ public class Equipment {
         return tvScreen;
     }
 
-    public boolean hasairConditioning() {
+    public boolean hasAirConditioning() {
         return airConditioning;
     }
 

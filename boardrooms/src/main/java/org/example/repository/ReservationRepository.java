@@ -2,7 +2,7 @@ package org.example.repository;
 
 import org.example.model.Boardroom;
 import org.example.model.Reservation;
-import org.example.model.ReservationStatus;
+import org.example.model.enums.ReservationStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,7 +67,6 @@ public class ReservationRepository implements IRepository<Reservation, Long> {
     }
 
     public List<Reservation> findAllByUserId(Long id) {
-        System.out.println("znajdz reserwacje dla user id - " + id);
         return database.values().stream()
                 .filter(reservation -> id.equals(reservation.getUserId()))
                 .toList();

@@ -3,8 +3,8 @@ package org.example.service;
 import org.example.exception.NotFoundException;
 import org.example.model.Boardroom;
 import org.example.model.Reservation;
-import org.example.model.ReservationStatus;
 import org.example.model.dto.ReservationTableDTO;
+import org.example.model.enums.ReservationStatus;
 import org.example.repository.ReservationRepository;
 
 import java.time.LocalDateTime;

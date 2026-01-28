@@ -1,15 +1,17 @@
-package org.example.gui;
+package org.example.gui.views;
 
 
 import org.example.gui.views.admin.CreateBoardroomPanel;
-import org.example.gui.views.booking.BookingPanel;
-import org.example.gui.views.browse.BrowsePanel;
-import org.example.gui.views.browse.ReservationsPanel;
+import org.example.gui.views.dashboard.AccountPanel;
+import org.example.gui.views.dashboard.BookingPanel;
+import org.example.gui.views.dashboard.BrowsePanel;
+import org.example.gui.views.dashboard.DashboardPanel;
+import org.example.gui.views.dashboard.ReservationsPanel;
 import org.example.gui.views.start.LoginPanel;
 import org.example.gui.views.start.RegisterPanel;
 import org.example.model.Account;
 import org.example.model.Boardroom;
-import org.example.model.Role;
+import org.example.model.enums.Role;
 import org.example.service.AccountService;
 import org.example.service.AccountServiceImpl;
 

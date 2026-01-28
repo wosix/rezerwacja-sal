@@ -2,8 +2,8 @@ package org.example.repository;
 
 import org.example.model.Boardroom;
 import org.example.model.Equipment;
-import org.example.model.RoomSize;
-import org.example.model.RoomType;
+import org.example.model.enums.RoomSize;
+import org.example.model.enums.RoomType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

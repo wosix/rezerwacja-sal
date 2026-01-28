@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.model.Account;
-import org.example.model.Role;
+import org.example.model.enums.Role;
 
 import java.util.ArrayList;
 import java.util.HashMap;

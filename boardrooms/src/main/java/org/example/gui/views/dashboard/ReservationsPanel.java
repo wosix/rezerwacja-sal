@@ -1,11 +1,11 @@
-package org.example.gui.views.browse;
+package org.example.gui.views.dashboard;
 
 import org.example.exception.NotFoundException;
 import org.example.gui.CommonGUI;
 import org.example.model.Account;
 import org.example.model.Reservation;
-import org.example.model.ReservationStatus;
 import org.example.model.dto.ReservationTableDTO;
+import org.example.model.enums.ReservationStatus;
 import org.example.service.ReservationServiceImpl;
 
 import javax.swing.JButton;

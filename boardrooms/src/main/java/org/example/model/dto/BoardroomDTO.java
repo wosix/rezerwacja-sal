@@ -3,8 +3,8 @@ package org.example.model.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.RoomSize;
-import org.example.model.RoomType;
+import org.example.model.enums.RoomSize;
+import org.example.model.enums.RoomType;
 
 @NoArgsConstructor
 @Getter

@@ -2,7 +2,7 @@ package org.example.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.model.ReservationStatus;
+import org.example.model.enums.ReservationStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

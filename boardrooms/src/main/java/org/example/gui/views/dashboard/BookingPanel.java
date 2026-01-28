@@ -1,8 +1,8 @@
-package org.example.gui.views.booking;
+package org.example.gui.views.dashboard;
 
 import org.example.exception.ValidationException;
 import org.example.gui.CommonGUI;
-import org.example.gui.MainFrame;
+import org.example.gui.views.MainFrame;
 import org.example.model.Boardroom;
 import org.example.service.ReservationServiceImpl;
 import org.jdatepicker.DateModel;

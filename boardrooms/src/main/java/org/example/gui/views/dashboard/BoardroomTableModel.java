@@ -1,11 +1,15 @@
-package org.example.gui.views.browse;
+package org.example.gui.views.dashboard;
 
 
 import org.example.model.Boardroom;
+import org.example.model.Equipment;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BoardroomTableModel extends AbstractTableModel {
 
@@ -39,9 +43,9 @@ public class BoardroomTableModel extends AbstractTableModel {
 
         return switch (columnIndex) {
             case 0 -> room.getNumber();
-            case 1 -> room.getRoomType();
-            case 2 -> room.getRoomSize();
-            case 3 -> room.getEquipment().hasProjector();
+            case 1 -> room.getRoomType().getDisplayName();
+            case 2 -> room.getRoomSize().getDisplayName();
+            case 3 -> eqtToString(room.getEquipment());
             case 4 -> room.isAvailable();
             default -> "";
         };
@@ -50,6 +54,23 @@ public class BoardroomTableModel extends AbstractTableModel {
     public void setRooms(List<Boardroom> rooms) {
         this.rooms = rooms;
         fireTableDataChanged();
+    }
+
+    private String eqtToString(Equipment equipment) {
+        Map<String, Boolean> equipmentMap = new LinkedHashMap<>();
+        equipmentMap.put("Rzutnik", equipment.hasProjector());
+        equipmentMap.put("Tablica", equipment.hasWhiteboard());
+        equipmentMap.put("Nagłośnienie", equipment.hasSoundSystem());
+        equipmentMap.put("Klimatyzacja", equipment.hasAirConditioning());
+        equipmentMap.put("Wideokonferencje", equipment.hasVideoConferenceSystem());
+        equipmentMap.put("Tv", equipment.hasTvScreen());
+
+        String result = equipmentMap.entrySet().stream()
+                .filter(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.joining(", "));
+
+        return result.isEmpty() ? "Brak" : result;
     }
 
     public List<Boardroom> getRooms() {

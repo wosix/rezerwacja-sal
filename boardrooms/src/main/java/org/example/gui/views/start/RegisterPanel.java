@@ -2,9 +2,9 @@ package org.example.gui.views.start;
 
 import org.example.exception.RegisterException;
 import org.example.gui.CommonGUI;
-import org.example.gui.MainFrame;
-import org.example.model.Role;
+import org.example.gui.views.MainFrame;
 import org.example.model.dto.AccountDTO;
+import org.example.model.enums.Role;
 import org.example.service.AccountServiceImpl;
 
 import javax.swing.JButton;

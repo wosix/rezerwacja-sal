@@ -2,7 +2,7 @@ package org.example.gui.views.start;
 
 import org.example.exception.LoginException;
 import org.example.gui.CommonGUI;
-import org.example.gui.MainFrame;
+import org.example.gui.views.MainFrame;
 import org.example.service.AccountServiceImpl;
 
 import javax.swing.JButton;
