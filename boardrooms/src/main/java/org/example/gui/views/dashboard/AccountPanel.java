@@ -150,8 +150,6 @@ public class AccountPanel extends JPanel {
         buttonPanel.add(cancelButton);
         buttonPanel.add(backButton);
 
-
-//        JPanel southWrapper = CommonGUI.createSouthWrapper(buttonPanel);
         JPanel southWrapper = CommonGUI.createActionButtonWrapper(saveButton, cancelButton, backButton);
 
         panel.add(formPanel, BorderLayout.CENTER);

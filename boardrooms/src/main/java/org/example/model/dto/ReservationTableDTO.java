@@ -19,7 +19,7 @@ public class ReservationTableDTO {
     private LocalDateTime end;
     private ReservationStatus status;
 
-    private static String dateTimePattern = "dd:MM:yyyy - HH:mm";
+    private static String dateTimePattern = "dd/MM/yyyy - HH:mm";
 
     public String getStart() {
         return this.start.format(DateTimeFormatter.ofPattern(dateTimePattern));

@@ -2,7 +2,7 @@ package org.example.gui.views.dashboard;
 
 import org.example.gui.CommonGUI;
 import org.example.gui.views.MainFrame;
-import org.example.model.Account;
+import org.example.model.entity.Account;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;

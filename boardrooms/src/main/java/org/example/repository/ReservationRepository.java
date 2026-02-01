@@ -1,82 +1,17 @@
 package org.example.repository;
 
-import org.example.model.Boardroom;
-import org.example.model.Reservation;
+import org.example.model.entity.Reservation;
 import org.example.model.enums.ReservationStatus;
+import org.example.repository.jpa.IRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
-public class ReservationRepository implements IRepository<Reservation, Long> {
+public interface ReservationRepository extends IRepository<Reservation, Long> {
 
-    private static ReservationRepository instance;
-    private static BoardroomRepository boardroomRepository;
+    List<Reservation> findAllByAccountId(Long accountId);
 
-    private final Map<Long, Reservation> database = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    List<Reservation> findByBoardroomId(Long boardroomId);
 
-    private ReservationRepository() {
-        this.boardroomRepository = BoardroomRepository.getInstance();
-        Optional<Boardroom> boardroom1 = boardroomRepository.findById(1L);
-        Optional<Boardroom> boardroom = boardroomRepository.findById(2L);
-
-        save(new Reservation(3L, boardroom.get(), LocalDateTime.now(), LocalDateTime.now().plusHours(2), ReservationStatus.CONFIRMED));
-        save(new Reservation(3L, boardroom1.get(), LocalDateTime.of(2026, 1, 28, 7, 0), LocalDateTime.of(2026, 1, 28, 10, 0), ReservationStatus.CONFIRMED));
-        save(new Reservation(2L, boardroom1.get(), LocalDateTime.of(2026, 1, 28, 17, 0), LocalDateTime.of(2026, 1, 28, 19, 0), ReservationStatus.CONFIRMED));
-    }
-
-    public static synchronized ReservationRepository getInstance() {
-        if (instance == null) {
-            instance = new ReservationRepository();
-        }
-        return instance;
-    }
-
-    @Override
-    public void save(Reservation reservation) {
-        if (reservation.getId() == null) {
-            reservation.setId(idGenerator.getAndIncrement());
-        }
-        database.put(reservation.getId(), reservation);
-    }
-
-    @Override
-    public void delete(Long id) {
-        database.remove(id);
-    }
-
-    @Override
-    public List<Reservation> findAll() {
-        return new ArrayList<>(database.values());
-    }
-
-    @Override
-    public Optional<Reservation> findById(Long id) {
-        return Optional.ofNullable(database.get(id));
-    }
-
-    @Override
-    public long count() {
-        return database.size();
-    }
-
-    public List<Reservation> findAllByUserId(Long id) {
-        return database.values().stream()
-                .filter(reservation -> id.equals(reservation.getUserId()))
-                .toList();
-    }
-
-    public List<Reservation> findByBoardroomId(Long boardroomId) {
-        return database.values().stream()
-                .filter(reservation -> reservation.getBoardroom() != null &&
-                        reservation.getBoardroom().getId().equals(boardroomId))
-                .collect(Collectors.toList());
-    }
+    List<Reservation> findByStatus(ReservationStatus status);
 
 }

@@ -1,8 +1,8 @@
 package org.example.gui.views.dashboard;
 
 
-import org.example.model.Boardroom;
-import org.example.model.Equipment;
+import org.example.model.entity.Boardroom;
+import org.example.model.entity.Equipment;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

@@ -50,7 +50,6 @@ public class ReservationsTableModel extends AbstractTableModel {
 
     public void setReservations(List<ReservationTableDTO> reservations) {
         this.reservations = reservations;
-//        System.out.println("mamy rezerwacji : " + this.reservations.size());
         fireTableDataChanged();
     }
 

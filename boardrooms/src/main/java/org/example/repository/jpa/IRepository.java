@@ -1,4 +1,4 @@
-package org.example.repository;
+package org.example.repository.jpa;
 
 import java.util.List;
 import java.util.Optional;

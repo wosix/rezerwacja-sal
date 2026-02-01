@@ -153,9 +153,11 @@ public class RegisterPanel extends JPanel {
     }
 
     public void resetFields() {
+        firstNameField.setText("");
+        lastNameField.setText("");
         emailField.setText("");
         passwordField.setText("");
-        emailField.requestFocus();
+        passwordRepeatField.setText("");
     }
 
     private AccountDTO createDTOFromFields(

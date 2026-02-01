@@ -1,18 +1,17 @@
 package org.example.service;
 
-import org.example.model.Account;
 import org.example.model.dto.AccountDTO;
+import org.example.model.entity.Account;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AccountService {
 
     List<Account> getAll();
 
-    Optional<Account> getById(Long id);
+    Account getById(Long id);
 
-    Optional<Account> login(String email, String password);
+    Account login(String email, String password);
 
     void create(AccountDTO account);
 

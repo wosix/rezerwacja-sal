@@ -1,20 +1,20 @@
 package org.example.service;
 
+import org.example.exception.NotFoundException;
 import org.example.exception.ValidationException;
-import org.example.model.Boardroom;
-import org.example.model.Equipment;
 import org.example.model.dto.BoardroomDTO;
-import org.example.repository.BoardroomRepository;
+import org.example.model.entity.Boardroom;
+import org.example.model.entity.Equipment;
+import org.example.repository.BoardroomRepositoryImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 public class BoardroomServiceImpl implements BoardroomService {
 
-    private final BoardroomRepository boardroomRepository;
+    private final BoardroomRepositoryImpl boardroomRepository;
 
     public BoardroomServiceImpl() {
-        this.boardroomRepository = BoardroomRepository.getInstance();
+        this.boardroomRepository = new BoardroomRepositoryImpl();
     }
 
     @Override
@@ -23,8 +23,9 @@ public class BoardroomServiceImpl implements BoardroomService {
     }
 
     @Override
-    public Optional<Boardroom> getById(Long id) {
-        return boardroomRepository.findById(id);
+    public Boardroom getById(Long id) {
+        return boardroomRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Nie znaleziono sali o takim id: " + id));
     }
 
     @Override
@@ -32,7 +33,6 @@ public class BoardroomServiceImpl implements BoardroomService {
         if (!authenticate(boardroomDTO)) {
             throw new ValidationException("Nie wpisano numeru sali");
         }
-
         Boardroom boardroom = new Boardroom(
                 boardroomDTO.getNumber(),
                 boardroomDTO.getRoomType(),
@@ -47,7 +47,6 @@ public class BoardroomServiceImpl implements BoardroomService {
                 ),
                 boardroomDTO.isAvailable()
         );
-
         boardroomRepository.save(boardroom);
     }
 
@@ -57,17 +56,26 @@ public class BoardroomServiceImpl implements BoardroomService {
 
     @Override
     public void delete(Long id) {
-        boardroomRepository.delete(id);
+//        boardroomRepository.delete(id);
     }
 
     @Override
     public void update(Long id, Boardroom boardroom) {
+//        boardroomRepository.save(boardroom);
+    }
+
+    @Override
+    public void active(Long id) {
+        Boardroom boardroom = getById(id);
+        boardroom.setAvailable(true);
         boardroomRepository.save(boardroom);
     }
 
     @Override
-    public void updateStatus(Long id, boolean isActive) {
-//        boardroomRepository.save();
+    public void deactive(Long id) {
+        Boardroom boardroom = getById(id);
+        boardroom.setAvailable(false);
+        boardroomRepository.save(boardroom);
     }
 
 }

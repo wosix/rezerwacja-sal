@@ -1,6 +1,7 @@
 package org.example.gui.views;
 
 
+import lombok.Getter;
 import org.example.gui.views.admin.CreateBoardroomPanel;
 import org.example.gui.views.dashboard.AccountPanel;
 import org.example.gui.views.dashboard.BookingPanel;
@@ -9,10 +10,9 @@ import org.example.gui.views.dashboard.DashboardPanel;
 import org.example.gui.views.dashboard.ReservationsPanel;
 import org.example.gui.views.start.LoginPanel;
 import org.example.gui.views.start.RegisterPanel;
-import org.example.model.Account;
-import org.example.model.Boardroom;
+import org.example.model.entity.Account;
+import org.example.model.entity.Boardroom;
 import org.example.model.enums.Role;
-import org.example.service.AccountService;
 import org.example.service.AccountServiceImpl;
 
 import javax.swing.JButton;
@@ -23,14 +23,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import java.awt.CardLayout;
-import java.util.Optional;
 
 public class MainFrame extends JFrame {
+
+    private final AccountServiceImpl accountService;
 
     private static MainFrame instance;
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
+    @Getter
     private Account currentUser;
 
     private JMenu adminMenu;
@@ -39,13 +41,16 @@ public class MainFrame extends JFrame {
     private LoginPanel loginPanel;
     private RegisterPanel registerPanel;
 
+    @Getter
     private DashboardPanel dashboardPanel;
     private AccountPanel accountPanel;
     private BrowsePanel browsePanel;
     private ReservationsPanel reservationsPanel;
+    @Getter
     private BookingPanel bookingPanel;
 
     private MainFrame() {
+        this.accountService = new AccountServiceImpl();
         initFrame();
         initPanels();
     }
@@ -58,31 +63,17 @@ public class MainFrame extends JFrame {
     }
 
     public void handleLogin(String email, String password) {
-        AccountService service = new AccountServiceImpl();
-        Optional<Account> accountOpt = service.login(email, password);
-
-        if (accountOpt.isPresent()) {
-            this.currentUser = accountOpt.get();
-            showDashboard(this.currentUser);
-        }
-    }
-
-    public Account getCurrentUser() {
-        return currentUser;
+        this.currentUser = accountService.login(email, password);
+        showDashboard(this.currentUser);
     }
 
     private void initFrame() {
-        setTitle("System Studencki - Projekt");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100, 800);
-        setLocationRelativeTo(null);
-
-        // setIconImage(new ImageIcon("icon.png").getImage());
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
-
-        setJMenuBar(createMenuBar());
+        setJMenuBar(new JMenuBar());
     }
 
     private void initPanels() {
@@ -122,11 +113,8 @@ public class MainFrame extends JFrame {
         JButton browseButton = new JButton("Przeglądaj sale konferencyjne");
         browseButton.addActionListener(e -> showBrowse());
 
-//        JButton bookingButton = new JButton("booking");
-//        bookingButton.addActionListener(e -> showBooking());
-
         JButton logoutButton = new JButton("Wyloguj się");
-        logoutButton.addActionListener(e -> showLogin());
+        logoutButton.addActionListener(e -> logout());
 
         JButton exitButton = new JButton("Zamknij");
         exitButton.addActionListener(e -> System.exit(0));
@@ -138,11 +126,10 @@ public class MainFrame extends JFrame {
 
         menuBar.add(new JSeparator());
 
-        adminMenu = createAdminMenu();
-
-        menuBar.add(adminMenu);
-
-//        menuBar.add(bookingButton);
+        if (currentUser.getRole() == Role.ADMIN) {
+            adminMenu = createAdminMenu();
+            menuBar.add(adminMenu);
+        }
 
         menuBar.add(new JSeparator());
 
@@ -161,7 +148,7 @@ public class MainFrame extends JFrame {
         JMenuItem settings = new JMenuItem("Ustawienia systemu");
 
 //        manageUsers.addActionListener(e -> openUserManagement());
-        createBoardroom.addActionListener(e -> handleCreateBoardroom());
+        createBoardroom.addActionListener(e -> showCreateBoardroom());
 //        reports.addActionListener(e -> openReports());
 //        settings.addActionListener(e -> openSettings());
 
@@ -174,8 +161,9 @@ public class MainFrame extends JFrame {
         return menu;
     }
 
-    private void handleCreateBoardroom() {
-        cardLayout.show(mainPanel, "CREATE_BOARDROOM");
+    private void logout() {
+        this.currentUser = null;
+        showLogin();
     }
 
     public void showLogin() {
@@ -194,20 +182,14 @@ public class MainFrame extends JFrame {
         if (dashboardPanel != null) {
             mainPanel.remove(dashboardPanel);
         }
+        this.currentUser = currentUser;
         dashboardPanel = new DashboardPanel(currentUser);
         mainPanel.add(dashboardPanel, "DASHBOARD");
 
         cardLayout.show(mainPanel, "DASHBOARD");
-        getJMenuBar().setVisible(true);
+
         setTitle("System Sal - Dashboard (" + currentUser.getEmail() + ")");
-
-        this.currentUser = currentUser;
-        updateMenuForUser(currentUser);
-    }
-
-    private void updateMenuForUser(Account user) {
-        if (user == null) adminMenu.setVisible(false);
-        if (user.getRole() == Role.ADMIN) adminMenu.setVisible(true);
+        setJMenuBar(createMenuBar());
     }
 
     public void showAccount() {
@@ -243,16 +225,8 @@ public class MainFrame extends JFrame {
         getJMenuBar().setVisible(true);
     }
 
-    public LoginPanel getLoginPanel() {
-        return loginPanel;
-    }
-
-    public DashboardPanel getDashboardPanel() {
-        return dashboardPanel;
-    }
-
-    public BookingPanel getBookingPanel() {
-        return bookingPanel;
+    private void showCreateBoardroom() {
+        cardLayout.show(mainPanel, "CREATE_BOARDROOM");
     }
 
 }

@@ -1,16 +1,15 @@
 package org.example.service;
 
-import org.example.model.Boardroom;
 import org.example.model.dto.BoardroomDTO;
+import org.example.model.entity.Boardroom;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardroomService {
 
     List<Boardroom> getAll();
 
-    Optional<Boardroom> getById(Long id);
+    Boardroom getById(Long id);
 
     void create(BoardroomDTO boardroomDTO);
 
@@ -18,6 +17,8 @@ public interface BoardroomService {
 
     void update(Long id, Boardroom boardroom);
 
-    void updateStatus(Long id, boolean isActive);
+    void active(Long id);
+
+    void deactive(Long id);
 
 }

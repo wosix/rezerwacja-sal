@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence">
+    <persistence-unit name="boardrooms" transaction-type="RESOURCE_LOCAL">
+
+        <class>org.example.model.entity.Account</class>
+        <class>org.example.model.entity.Boardroom</class>
+        <class>org.example.model.entity.Reservation</class>
+
+    </persistence-unit>
+</persistence>

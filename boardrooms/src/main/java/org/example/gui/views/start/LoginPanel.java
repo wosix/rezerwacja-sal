@@ -80,21 +80,13 @@ public class LoginPanel extends JPanel {
 
             try {
                 MainFrame.getInstance().handleLogin(email, password);
-
-//                JOptionPane.showMessageDialog(this,
-//                        "Udane logowanie!",
-//                        "Sukces",
-//                        JOptionPane.PLAIN_MESSAGE);
-
                 resetFields();
-
             } catch (LoginException ex) {
                 JOptionPane.showMessageDialog(this,
                         ex.getMessage(),
                         "Błąd logowania",
                         JOptionPane.ERROR_MESSAGE);
             }
-
         });
     }
 
@@ -106,7 +98,7 @@ public class LoginPanel extends JPanel {
         });
     }
 
-    public void resetFields() {
+    private void resetFields() {
         emailField.setText("");
         passwordField.setText("");
         emailField.requestFocus();

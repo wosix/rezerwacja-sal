@@ -1,10 +1,14 @@
-package org.example.model;
+package org.example.model.entity;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.Setter;
 
+@Embeddable
 @AllArgsConstructor
 @Setter
+@Getter
 public class Equipment {
 
     private boolean projector;

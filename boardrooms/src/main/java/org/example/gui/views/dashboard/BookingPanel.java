@@ -3,7 +3,7 @@ package org.example.gui.views.dashboard;
 import org.example.exception.ValidationException;
 import org.example.gui.CommonGUI;
 import org.example.gui.views.MainFrame;
-import org.example.model.Boardroom;
+import org.example.model.entity.Boardroom;
 import org.example.service.ReservationServiceImpl;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePanel;
@@ -62,28 +62,18 @@ public class BookingPanel extends JPanel {
         createDatePanel();
         createTimelinePanel();
 
-//        JScrollPane scrollPane = new JScrollPane(timePanel);
-//        scrollPane.setVerticalScrollBar(new JScrollBar());
-//        scrollPane.setHorizontalScrollBar(null);
-
         JPanel eastWrapper = CommonGUI.createWrapper(0, 25, 0, 25,
                 timePanel);
 
         add(datePanel, BorderLayout.CENTER);
-
-//        add(scrollPane, BorderLayout.EAST);
         add(eastWrapper, BorderLayout.EAST);
 
         createActionButtons();
-
-
         JPanel southWrapper = CommonGUI.createSouthWrapper(10,
                 reserveButton,
                 backButton
         );
-
         add(southWrapper, BorderLayout.SOUTH);
-
     }
 
     private void createActionButtons() {
@@ -104,19 +94,16 @@ public class BookingPanel extends JPanel {
 
     private void handleReserveBoardroom() {
         try {
-            reservationService.makeReservation(
+            reservationService.createReservation(
                     MainFrame.getInstance().getCurrentUser().getId(),
                     boardroom,
                     selectedDateTime
             );
-
             JOptionPane.showMessageDialog(this,
                     "Rezerwacja zakończona sukcesem!",
                     "Sukces!",
                     JOptionPane.INFORMATION_MESSAGE);
-
             refreshTimePanel();
-
         } catch (ValidationException ex) {
             JOptionPane.showMessageDialog(this,
                     "Wystąpił błąd przy rezerwacji" + ex.getMessage(),
@@ -130,7 +117,6 @@ public class BookingPanel extends JPanel {
         if (datePanel.getModel().getValue() == null) {
             return LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         }
-
         return LocalDateTime.of(
                 model.getYear(),
                 model.getMonth() + 1,
@@ -185,18 +171,15 @@ public class BookingPanel extends JPanel {
                 hourButton.addActionListener(e -> {
                     int selectedHour = (int) hourButton.getClientProperty("hour");
                     onHourSelected(selectedHour);
-//                    this.selectedDateTime = selectedHour;
                     hourButton.setBackground(new Color(33, 133, 200));
                     System.out.println("Wybrano godzinę: " + selectedHour + " dla daty: " + selectedDate);
                 });
             }
-
             timePanel.add(hourButton);
             if (hour < 20) {
                 timePanel.add(new JSeparator(SwingConstants.HORIZONTAL));
             }
         }
-
         timePanel.revalidate();
         timePanel.repaint();
     }
@@ -204,6 +187,5 @@ public class BookingPanel extends JPanel {
     private void onHourSelected(int selectedHour) {
         this.selectedDateTime = getSelectedDate().withHour(selectedHour);
     }
-
 
 }

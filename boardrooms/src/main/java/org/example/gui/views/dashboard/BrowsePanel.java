@@ -2,7 +2,7 @@ package org.example.gui.views.dashboard;
 
 import org.example.gui.CommonGUI;
 import org.example.gui.views.MainFrame;
-import org.example.model.Boardroom;
+import org.example.model.entity.Boardroom;
 import org.example.service.BoardroomServiceImpl;
 
 import javax.swing.JButton;
